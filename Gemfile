@@ -15,6 +15,8 @@ gem 'devise'
 
 gem 'devise_token_auth'
 
+gem 'omniauth'
+
 gem 'pundit'
 
 # Build JSON APIs with ease [https://github.com/rails/jbuilder]
@@ -47,6 +49,8 @@ group :development, :test do
   gem 'faker'
   gem 'shoulda-matchers'
   gem 'database_cleaner-active_record'
+  gem 'dotenv-rails'
+
   # See https://guides.rubyonrails.org/debugging_rails_applications.html#debugging-with-the-debug-gem
   gem "debug", platforms: %i[ mri windows ]
 end
