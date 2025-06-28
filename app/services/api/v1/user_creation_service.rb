@@ -5,8 +5,6 @@ module Api
 
       def self.call(params)
         user = User.new(params)
-        user.password = Devise.friendly_token[0, 20]
-        user.uid = user.email
 
         if user.save
           Result.new(true, user, nil)

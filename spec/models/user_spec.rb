@@ -63,4 +63,27 @@ RSpec.describe User, type: :model do
       expect(User.admin.count).to eq(1)
     end
   end
+
+  describe 'callbacks' do
+    context 'on create' do
+      it 'generates a random password if none is provided' do
+        user = build(:user, password: nil, password_confirmation: nil)
+        user.valid?
+        expect(user.password).to be_present
+        expect(user.password.length).to be >= 20
+      end
+
+      it 'sets uid as email if uid is blank' do
+        user = build(:user, uid: nil, email: 'test@example.com')
+        user.valid?
+        expect(user.uid).to eq('test@example.com')
+      end
+
+      it 'does not overwrite uid if already set' do
+        user = build(:user, uid: 'custom_uid', email: 'test@example.com')
+        user.valid?
+        expect(user.uid).to eq('custom_uid')
+      end
+    end
+  end
 end
