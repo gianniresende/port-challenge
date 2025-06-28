@@ -2,6 +2,7 @@ module Api
   module V1
     class UsersController < BaseController
       before_action :authenticate_webhook!, only: [:create]
+      before_action :authenticate_user!, only: [:index]
 
       def index
         users = UserFilter.call(params)
