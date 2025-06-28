@@ -5,6 +5,9 @@ class User < ApplicationRecord
 					:omniauthable
 	include DeviseTokenAuth::Concerns::User
 
+	validates :name, presence: true
+  validates :role, presence: true
+
 	enum role: { user: 0, admin: 1 }
 	enum status: { active: 0, inactive: 1 }
 
