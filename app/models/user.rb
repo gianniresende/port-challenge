@@ -6,4 +6,5 @@ class User < ApplicationRecord
 	include DeviseTokenAuth::Concerns::User
 
 	enum role: { user: 0, admin: 1 }
+	enum status: { active: 0, inactive: 1 }
 end
