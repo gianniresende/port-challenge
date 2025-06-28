@@ -3,14 +3,12 @@ module Api
     class UsersController < BaseController
       before_action :authenticate_webhook!, only: [:create]
       def create
-        user = User.new(user_params)
-        user.password = Devise.friendly_token[0, 20]
-        user.uid = user.email
+        result = UserCreationService.call(user_params)
 
-        if user.save
-          render json: { id: user.id, message: 'User created' }, status: :created
+        if result.success
+          render json: { id: result.user.id, message: 'User created' }, status: :created
         else
-          render json: { errors: user.errors.full_messages }, status: :unprocessable_entity
+          render json: { errors: result.errors }, status: :unprocessable_entity
         end
       end
 
