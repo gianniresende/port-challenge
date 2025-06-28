@@ -13,7 +13,10 @@ RSpec.describe "Api::V1::Users", type: :request do
     end
 
     context 'with valid parameters' do
-      it 'creates a new user and returns created status' do
+      it 'creates a new user, sends password email, and returns created status' do
+        mailer_double = double('Mailer', deliver_later: true)
+        allow(UserMailer).to receive(:send_password_email).and_return(mailer_double)
+
         expect {
           post '/api/v1/users', params: valid_params
         }.to change(User, :count).by(1)
@@ -22,6 +25,9 @@ RSpec.describe "Api::V1::Users", type: :request do
         json = JSON.parse(response.body)
         expect(json['id']).to be_present
         expect(json['message']).to eq('User created')
+
+        expect(UserMailer).to have_received(:send_password_email).with(kind_of(User), kind_of(String))
+        expect(mailer_double).to have_received(:deliver_later)
       end
     end
 
