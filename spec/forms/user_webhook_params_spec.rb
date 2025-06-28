@@ -3,7 +3,7 @@ require 'rails_helper'
 RSpec.describe UserWebhookParams do
   describe '#valid?' do
     context 'with valid params' do
-      let(:params) { { email: 'test@example.com', name: 'Test', role: 'user' } }
+      let(:params) { { email: 'test@example.com', name: 'Test', role: 'employee' } }
 
       it 'is valid' do
         form = described_class.new(params)
@@ -12,7 +12,7 @@ RSpec.describe UserWebhookParams do
     end
 
     context 'with missing email' do
-      let(:params) { { name: 'Test', role: 'user' } }
+      let(:params) { { name: 'Test', role: 'employee' } }
 
       it 'is not valid and adds error to email' do
         form = described_class.new(params)
@@ -24,8 +24,8 @@ RSpec.describe UserWebhookParams do
 
   describe '#attributes' do
     it 'returns a hash with permitted attributes' do
-      form = described_class.new(email: 'a@example.com', name: 'A', role: 'user')
-      expect(form.attributes).to eq(email: 'a@example.com', name: 'A', role: 'user')
+      form = described_class.new(email: 'a@example.com', name: 'A', role: 'employee')
+      expect(form.attributes).to eq(email: 'a@example.com', name: 'A', role: 'employee')
     end
   end
 end

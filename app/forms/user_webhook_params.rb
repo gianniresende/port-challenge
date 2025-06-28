@@ -6,7 +6,7 @@ class UserWebhookParams
 
   validates :email, presence: true, format: URI::MailTo::EMAIL_REGEXP
   validates :name, presence: true
-  validates :role, presence: true, inclusion: { in: %w[user admin] }
+  validates :role, presence: true, inclusion: { in: %w[employee hr manager admin] }
 
   def attributes
     {

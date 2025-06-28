@@ -7,7 +7,7 @@ class User < ApplicationRecord
 	validates :name, presence: true
   validates :role, presence: true
 
-	enum role: { user: 0, admin: 1 }
+	enum role: { employee: 0, hr: 1, manager: 2, admin: 3 }
 	enum status: { active: 0, inactive: 1 }
 
 	before_validation :set_password, on: :create

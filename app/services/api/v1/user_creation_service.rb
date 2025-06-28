@@ -13,6 +13,7 @@ module Api
         user = User.new(params_object.attributes)
 
         if user.save
+          Rails.logger.debug("User creation failed: #{user.errors.full_messages.join(', ')}")
           Result.new(true, user, nil)
         else
           Result.new(false, nil, user.errors.full_messages)

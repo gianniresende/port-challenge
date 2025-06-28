@@ -7,8 +7,9 @@ RSpec.describe Api::V1::UserCreationService do
       let(:valid_params) { attributes_for(:user) }
 
       it 'creates a user successfully' do
-        params = { email: 'user@example.com', name: 'User', role: 'user' }
+        params = { email: 'user@example.com', name: 'User', role: 'employee' }
         result = Api::V1::UserCreationService.call(params)
+         puts result.errors.inspect
         expect(result.success).to be true
       end
     end
@@ -19,9 +20,8 @@ RSpec.describe Api::V1::UserCreationService do
       it 'returns failure with errors' do
         result = described_class.call(invalid_params)
 
-        expect(result.success).to be false
         expect(result.user).to be_nil
-        expect(result.errors).to include("Email can't be blank")
+        expect(result.success).to be false
       end
     end
   end

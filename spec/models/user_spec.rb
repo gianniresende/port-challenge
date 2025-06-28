@@ -13,7 +13,7 @@ RSpec.describe User, type: :model do
     it { is_expected.to validate_presence_of(:name) }
 
     it { is_expected.to validate_presence_of(:role) }
-    it { is_expected.to define_enum_for(:role).with_values(%i[user admin]) }
+    it { is_expected.to define_enum_for(:role).with_values(%i[employee hr manager admin]) }
   end
 
   describe 'UUID as primary key' do
@@ -25,7 +25,7 @@ RSpec.describe User, type: :model do
   end
 
   describe 'enums' do
-    it { is_expected.to define_enum_for(:role).with_values(%i[user admin]) }
+    it { is_expected.to define_enum_for(:role).with_values(%i[employee hr manager admin]) }
     it { is_expected.to define_enum_for(:status).with_values(%i[active inactive]) }
   end
 
@@ -39,14 +39,14 @@ RSpec.describe User, type: :model do
 
     context 'when user is not admin' do
       it 'return false' do
-        user = build(:user, role: :user)
+        user = build(:user, role: :employee)
         expect(user.admin?).to be false
       end
     end
 
     it 'when return only admins' do
       create(:user, role: :admin)
-      create(:user, role: :user)
+      create(:user, role: :employee)
       expect(User.admin.count).to eq(1)
     end
   end
