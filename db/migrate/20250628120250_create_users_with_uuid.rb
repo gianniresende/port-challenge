@@ -22,7 +22,7 @@ class CreateUsersWithUuid < ActiveRecord::Migration[7.1]
       t.string :email, null: false, default: ""
       t.string :image
       t.integer :role, default: 0, null: false
-      t.integer :status, default: 0, null: false
+      t.integer :status, default: 1, null: false
 
       t.json :tokens
 

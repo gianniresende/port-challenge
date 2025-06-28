@@ -4,7 +4,13 @@ module Api
       Result = Struct.new(:success, :user, :errors)
 
       def self.call(params)
-        user = User.new(params)
+        params_object = UserWebhookParams.new(params)
+
+        unless params_object.valid?
+          return Result.new(false, nil, params_object.errors.full_messages)
+        end
+
+        user = User.new(params_object.attributes)
 
         if user.save
           Result.new(true, user, nil)
