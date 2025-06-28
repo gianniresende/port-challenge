@@ -4,4 +4,6 @@ class User < ApplicationRecord
 					:recoverable, :rememberable, :trackable, :validatable,
 					:confirmable, :omniauthable
 	include DeviseTokenAuth::Concerns::User
+
+	enum role: { user: 0, admin: 1 }
 end
