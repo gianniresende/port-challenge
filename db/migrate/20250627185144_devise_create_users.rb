@@ -41,6 +41,7 @@ class DeviseCreateUsers < ActiveRecord::Migration[7.1]
       t.string :nickname
       t.string :email,              null: false, default: ""
       t.string :image
+      t.integer :role, default: 0, null: false # 0: user, 1: admin
 
       ## Tokens
       t.json :tokens
