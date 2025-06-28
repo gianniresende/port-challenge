@@ -1,6 +1,6 @@
 module Api
   module V1
-    class UserCreationService
+    class UserCreation
       Result = Struct.new(:success, :user, :errors)
 
       def self.call(params)

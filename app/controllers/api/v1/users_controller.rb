@@ -2,8 +2,13 @@ module Api
   module V1
     class UsersController < BaseController
       before_action :authenticate_webhook!, only: [:create]
+
+      def index
+        users = UserFilter.call(params)
+        render json: UserSerializer.new(users)
+      end
       def create
-        result = UserCreationService.call(user_params)
+        result = UserCreation.call(user_params)
 
         if result.success
           UserMailer.send_password_email(result.user, result.user.password).deliver_later

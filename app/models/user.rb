@@ -13,6 +13,21 @@ class User < ApplicationRecord
 	before_validation :set_password, on: :create
   before_validation :set_uid, on: :create
 
+	scope :by_name, ->(name) { where("name ILIKE ?", "%#{name}%") if name.present? }
+  scope :by_email, ->(email) { where("email ILIKE ?", "%#{email}%") if email.present? }
+  scope :by_role, ->(role) { where(role: role) if role.present? }
+  scope :by_status, ->(status) { where(status: status) if status.present? }
+  scope :ordered_by, ->(field, direction = 'asc') {
+    allowed_fields = %w[name email created_at]
+    allowed_directions = %w[asc desc]
+
+    if allowed_fields.include?(field.to_s) && allowed_directions.include?(direction.to_s)
+      order("#{field} #{direction}")
+    else
+      all
+    end
+  }
+
   private
 
   def set_password
