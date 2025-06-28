@@ -1,15 +1,14 @@
 module Api
   module V1
     class BaseController < ApplicationController
-      before_action :authenticate_webhook!
+      include Pundit
+
+      rescue_from Pundit::NotAuthorizedError, with: :user_not_authorized
 
       private
 
-      def authenticate_webhook!
-        token = request.headers['Authorization']&.split(' ')&.last
-        unless ActiveSupport::SecurityUtils.secure_compare(token.to_s, ENV['WEBHOOK_SECRET'].to_s)
-          render json: { error: 'Unauthorized' }, status: :unauthorized
-        end
+      def user_not_authorized
+        render json: { error: 'Forbidden' }, status: :forbidden
       end
     end
   end

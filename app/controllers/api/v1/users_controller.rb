@@ -1,14 +1,15 @@
 module Api
   module V1
     class UsersController < BaseController
-      before_action :authenticate_webhook!, only: [:create]
-      before_action :authenticate_user!, only: [:index]
+      before_action :authenticate_user!
 
       def index
         users = UserFilter.call(params)
         render json: UserSerializer.new(users)
       end
       def create
+        authorize User
+
         result = UserCreation.call(user_params)
 
         if result.success
