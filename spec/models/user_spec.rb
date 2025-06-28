@@ -3,34 +3,41 @@ require 'rails_helper'
 RSpec.describe User, type: :model do
   subject { build(:user) }
 
-  # it "is valid with valid attributes" do
-  #   expect(subject).to be_valid
-  # end
-  # it "is invalid without a role" do
-  #   user = build(:user, role: nil)
-  #   expect(user).to_not be_valid
-  #   expect(user.errors[:role]).to include("can't be blank")
-  # end
+  describe 'auth' do
+    let(:user) { create(:user, password: '12345678', password_confirmation: '12345678') }
 
-  # it "is invalid without an email" do
-  #   user = User.new(password: "12345678", password_confirmation: "12345678")
-  #   expect(user).to_not be_valid
-  #   expect(user.errors[:email]).to include("can't be blank")
-  # end
+    it 'when correct password' do
+      expect(user.valid_password?('12345678')).to be true
+    end
+
+    it 'when incorrect password' do
+      expect(user.valid_password?('senhaerrada')).to be false
+    end
+  end
+
+  describe 'validation of password' do
+    it { is_expected.to validate_length_of(:password).is_at_least(6) }
+  end
 
   describe '#admin?' do
-    context 'quando o usuário é admin' do
-      it 'retorna true' do
+    context 'when user is admin' do
+      it 'return true' do
         user = build(:user, role: :admin)
         expect(user.admin?).to be true
       end
     end
 
-    context 'quando o usuário não é admin' do
-      it 'retorna false' do
+    context 'when user is not admin' do
+      it 'return false' do
         user = build(:user, role: :user)
         expect(user.admin?).to be false
       end
+    end
+
+    it 'when return only admins' do
+      create(:user, role: :admin)
+      create(:user, role: :user)
+      expect(User.admin.count).to eq(1)
     end
   end
 end
