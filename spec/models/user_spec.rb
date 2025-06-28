@@ -73,4 +73,54 @@ RSpec.describe User, type: :model do
       end
     end
   end
+
+  describe 'scopes' do
+    let!(:employee) { create(:user, name: 'Carlos Silva', email: 'carlos@example.com', role: :employee, status: :active) }
+    let!(:hr)       { create(:user, name: 'Helena Ramos', email: 'helena@example.com', role: :hr, status: :inactive) }
+
+    describe '.by_name' do
+      it 'returns users matching partial name' do
+        expect(User.by_name('car')).to include(employee)
+        expect(User.by_name('car')).not_to include(hr)
+      end
+
+      it 'returns all users if name is nil' do
+        expect(User.by_name(nil)).to include(employee, hr)
+      end
+    end
+
+    describe '.by_email' do
+      it 'returns users matching partial email' do
+        expect(User.by_email('helena')).to include(hr)
+        expect(User.by_email('helena')).not_to include(employee)
+      end
+    end
+
+    describe '.by_role' do
+      it 'returns users by role' do
+        expect(User.by_role(:hr)).to eq([hr])
+      end
+    end
+
+    describe '.by_status' do
+      it 'returns users by status' do
+        expect(User.by_status(:active)).to eq([employee])
+      end
+    end
+
+    describe '.ordered_by' do
+      it 'orders users by name ascending' do
+        expect(User.ordered_by(:name, :asc).first).to eq(employee)
+      end
+
+      it 'orders users by created_at descending' do
+        expect(User.ordered_by(:created_at, :desc).first).to eq(hr)
+      end
+
+      it 'returns all if invalid field or direction' do
+        expect(User.ordered_by(:unknown, :asc)).to include(employee, hr)
+        expect(User.ordered_by(:name, :sideways)).to include(employee, hr)
+      end
+    end
+  end
 end

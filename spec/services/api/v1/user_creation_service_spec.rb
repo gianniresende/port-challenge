@@ -1,14 +1,13 @@
-# spec/services/api/v1/user_creation_service_spec.rb
 require 'rails_helper'
 
-RSpec.describe Api::V1::UserCreationService do
+RSpec.describe Api::V1::UserCreation do
   describe '.call' do
     context 'when valid parameters' do
       let(:valid_params) { attributes_for(:user) }
 
       it 'creates a user successfully' do
         params = { email: 'user@example.com', name: 'User', role: 'employee' }
-        result = Api::V1::UserCreationService.call(params)
+        result = Api::V1::UserCreation.call(params)
          puts result.errors.inspect
         expect(result.success).to be true
       end
