@@ -15,8 +15,12 @@ RSpec.describe User, type: :model do
     end
   end
 
-  describe 'validation of password' do
-    it { is_expected.to validate_length_of(:password).is_at_least(6) }
+  describe 'password validation' do
+    it 'is invalid when password is shorter than 6 characters' do
+      user = build(:user, password: '123', password_confirmation: '123')
+      expect(user).not_to be_valid
+      expect(user.errors[:password]).to include("is too short (minimum is 6 characters)")
+    end
   end
 
   describe '#admin?' do
