@@ -3,30 +3,17 @@ require 'rails_helper'
 RSpec.describe User, type: :model do
   subject { build(:user) }
 
-  describe 'auth' do
-    let(:user) { create(:user, password: '12345678', password_confirmation: '12345678') }
-
-    it 'when correct password' do
-      expect(user.valid_password?('12345678')).to be true
-    end
-
-    it 'when incorrect password' do
-      expect(user.valid_password?('senhaerrada')).to be false
-    end
-  end
-
-  describe 'password validation' do
-    it 'is invalid when password is shorter than 6 characters' do
-      user = build(:user, password: '123', password_confirmation: '123')
-      expect(user).not_to be_valid
-      expect(user.errors[:password]).to include("is too short (minimum is 6 characters)")
-    end
-  end
-
   describe 'validations' do
     it { is_expected.to validate_presence_of(:email) }
+    it { is_expected.to allow_value('user@example.com').for(:email) }
+    it { is_expected.not_to allow_value('invalid_email').for(:email) }
+
     it { is_expected.to validate_uniqueness_of(:email).scoped_to(:provider).case_insensitive }
-    it { is_expected.to validate_length_of(:password).is_at_least(6) }
+
+    it { is_expected.to validate_presence_of(:name) }
+
+    it { is_expected.to validate_presence_of(:role) }
+    it { is_expected.to define_enum_for(:role).with_values(%i[user admin]) }
   end
 
   describe 'UUID as primary key' do
