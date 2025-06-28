@@ -1,6 +1,6 @@
 module Api
   module V1
-    class UsersController < ApplicationController
+    class UsersController < BaseController
       before_action :authenticate_webhook!, only: [:create]
       def create
         user = User.new(user_params)
@@ -20,12 +20,6 @@ module Api
         params.require(:user).permit(:email, :name, :role)
       end
 
-      def authenticate_webhook!
-        token = request.headers['Authorization']&.split(' ')&.last
-        unless ActiveSupport::SecurityUtils.secure_compare(token.to_s, ENV['WEBHOOK_SECRET'].to_s)
-          render json: { error: 'Unauthorized' }, status: :unauthorized
-        end
-      end
     end
   end
 end
