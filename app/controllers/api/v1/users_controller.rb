@@ -1,9 +1,10 @@
 module Api
   module V1
     class UsersController < ApplicationController
+      before_action :authenticate_webhook!, only: [:create]
       def create
         user = User.new(user_params)
-        user.password = Devise.friendly_token[0, 20] # senha aleatória
+        user.password = Devise.friendly_token[0, 20]
         user.uid = user.email
 
         if user.save
@@ -17,6 +18,13 @@ module Api
 
       def user_params
         params.require(:user).permit(:email, :name, :role)
+      end
+
+      def authenticate_webhook!
+        token = request.headers['Authorization']&.split(' ')&.last
+        unless ActiveSupport::SecurityUtils.secure_compare(token.to_s, ENV['WEBHOOK_SECRET'].to_s)
+          render json: { error: 'Unauthorized' }, status: :unauthorized
+        end
       end
     end
   end
