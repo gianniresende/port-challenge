@@ -13,7 +13,6 @@ module Api
         result = UserCreation.call(user_params)
 
         if result.success
-          UserMailer.send_password_email(result.user, result.user.password).deliver_later
           render json: { id: result.user.id, message: 'User created' }, status: :created
         else
           render json: { errors: result.errors }, status: :unprocessable_entity

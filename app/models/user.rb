@@ -12,6 +12,7 @@ class User < ApplicationRecord
 
 	before_validation :set_password, on: :create
   before_validation :set_uid, on: :create
+  after_create :send_welcome_email
 
 	scope :by_name, ->(name) { where("name ILIKE ?", "%#{name}%") if name.present? }
   scope :by_email, ->(email) { where("email ILIKE ?", "%#{email}%") if email.present? }
@@ -31,11 +32,18 @@ class User < ApplicationRecord
   private
 
   def set_password
-    # Only set password if not already set (ex: webhook creation)
-    self.password ||= Devise.friendly_token[0, 20]
+    generated_password = Devise.friendly_token[0, 20]
+    self.password ||= generated_password
+    self.instance_variable_set(:@raw_password, generated_password)
   end
 
   def set_uid
     self.uid = email if uid.blank? && email.present?
+  end
+
+  def send_welcome_email
+    p '-------------------------'
+    password = instance_variable_get(:@raw_password)
+    Mailers::WelcomeMailerJob.perform_later(self.id, password)
   end
 end
