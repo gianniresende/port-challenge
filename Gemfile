@@ -23,7 +23,9 @@ gem 'pundit'
 # gem "jbuilder"
 
 # Use Redis adapter to run Action Cable in production
-# gem "redis", ">= 4.0.1"
+gem 'sidekiq'
+
+gem 'redis'
 
 # Use Kredis to get higher-level data types in Redis [https://github.com/rails/kredis]
 # gem "kredis"
@@ -42,12 +44,19 @@ gem "bootsnap", require: false
 
 # Use Rack CORS for handling Cross-Origin Resource Sharing (CORS), making cross-origin Ajax possible
 # gem "rack-cors"
+gem 'filterable'
+
+gem 'will_paginate', '~> 3.3'
+
+gem 'jsonapi-serializer'
+
+gem 'pundit'
 
 group :development, :test do
   gem 'rspec-rails'
   gem 'factory_bot_rails'
   gem 'faker'
-  gem 'shoulda-matchers'
+  gem 'shoulda-matchers', '~> 5.0'
   gem 'database_cleaner-active_record'
   gem 'dotenv-rails'
 
@@ -58,5 +67,6 @@ end
 group :development do
   # Speed up commands on slow machines / big apps [https://github.com/rails/spring]
   # gem "spring"
+  gem 'letter_opener'
 end
 
