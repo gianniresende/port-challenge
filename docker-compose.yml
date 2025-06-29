@@ -1,6 +1,38 @@
-version: '3.9'
+# version: '3.9'
+
+# services:
+#   db:
+#     image: postgres:15
+#     restart: always
+#     env_file:
+#       - .env
+#     environment:
+#       POSTGRES_USER: ${DATABASE_USERNAME}
+#       POSTGRES_PASSWORD: ${DATABASE_PASSWORD}
+#     volumes:
+#       - pg_data:/var/lib/postgresql/data
+#     ports:
+#       - "5430:5432"
+
+# volumes:
+#   pg_data:
+
 
 services:
+  backend:
+    build: ./backend
+    ports:
+      - "3000:3000"
+    volumes:
+      - ./backend:/app
+    depends_on:
+      - db
+      - redis
+    environment:
+      - RAILS_ENV=development
+      - DATABASE_URL=postgres://postgres:postgres@db:5432/myapp
+      - REDIS_URL=redis://redis:6379/1
+
   db:
     image: postgres:15
     restart: always
@@ -13,6 +45,10 @@ services:
       - pg_data:/var/lib/postgresql/data
     ports:
       - "5430:5432"
+
+  redis:
+    image: redis:7
+    restart: always
 
 volumes:
   pg_data:
