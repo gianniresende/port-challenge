@@ -4,7 +4,7 @@ import { useAuth } from '../hooks/use-auth'
 import { LoginForm } from '../components/login/LoginForm'
 
 export default function Login() {
-  const { user, setUser } = useAuth()
+  const { user, setUser, setAuthHeaders } = useAuth()
   const navigate = useNavigate()
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState('')
@@ -29,18 +29,19 @@ export default function Login() {
       })
 
       if (!response.ok) {
-        throw new Error('Email ou senha inválidos')
+        throw new Error('Invalid credentials')
       }
 
       const data = await response.json()
-      const headers = {
-        'access-token': response.headers.get('access-token'),
-        client: response.headers.get('client'),
-        uid: response.headers.get('uid'),
-        authorization: response.headers.get('authorization'),
+      const authorization = response.headers.get('authorization')
+
+      if (!authorization) {
+        throw new Error('Token de autorização ausente')
       }
 
-      setUser({ ...data.data, ...headers })
+      setUser({ ...data.data })
+      setAuthHeaders({ authorization })
+
       navigate('/', { replace: true })
 
     } catch (error: unknown) {
