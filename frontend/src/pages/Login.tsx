@@ -1,10 +1,21 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
+import { useNavigate } from 'react-router-dom'
+import { useAuth } from '../hooks/use-auth'
 
 export default function Login() {
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
   const [error, setError] = useState('')
   const [loading, setLoading] = useState(false)
+  const navigate = useNavigate()
+  const { user, setUser } = useAuth()
+
+  console.log('User:', user)
+  useEffect(() => {
+    if (user) {
+      navigate('/', { replace: true })
+    }
+  }, [user, navigate])
 
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault()
@@ -26,6 +37,16 @@ export default function Login() {
 
       const data = await response.json()
       console.log('Login bem-sucedido:', data)
+      const headers = {
+        'access-token': response.headers.get('access-token'),
+        client: response.headers.get('client'),
+        uid: response.headers.get('uid'),
+        authorization: response.headers.get('authorization'),
+      }
+
+      setUser({ ...data.data, ...headers })
+
+      navigate('/', { replace: true })
 
     } catch (error: unknown) {
       if (error instanceof Error) {
