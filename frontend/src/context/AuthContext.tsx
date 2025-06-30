@@ -5,6 +5,7 @@ import { AuthContext } from './auth-context'
 type User = {
   name: string
   email: string
+  role: string
 }
 
 export function AuthProvider({ children }: { children: ReactNode }) {
