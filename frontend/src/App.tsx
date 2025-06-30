@@ -1,9 +1,10 @@
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom'
 import Home from './pages/Home'
 import Login from './pages/Login'
+import Users from './pages/Users'
 import { AuthProvider } from './context/AuthContext'
 import { ProtectedRoute } from './components/protected-route/ProtectedRoute'
-import Layout from './components/layout/Layout'
+import { ProtectedLayout } from './components/protected-layout/ProtectedLayout'
 
 function App() {
   return (
@@ -15,10 +16,18 @@ function App() {
             path="/"
             element={
               <ProtectedRoute>
-                <Layout>
+                <ProtectedLayout>
                   <Home />
-                </Layout>
+                </ProtectedLayout>
               </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/users"
+            element={
+              <ProtectedLayout>
+                <Users />
+              </ProtectedLayout>
             }
           />
         </Routes>

@@ -1,5 +1,5 @@
 import { useAuth } from '../../hooks/use-auth'
-import { useNavigate } from 'react-router-dom'
+import { useNavigate, Link } from 'react-router-dom'
 
 export default function Header() {
   const { user, logout } = useAuth()
@@ -18,8 +18,16 @@ export default function Header() {
         <h1 className="text-xl font-bold">TeamTalk</h1>
         <nav className="flex items-center gap-6">
           <ul className="flex gap-4">
-            <li><a href="#" className="hover:underline">Usuários</a></li>
-            <li><a href="#" className="hover:underline">Sobre</a></li>
+            <li>
+              <Link to="/users" className="hover:underline">
+                Usuários
+              </Link>
+            </li>
+            <li>
+              <Link to="/about" className="hover:underline">
+                Sobre
+              </Link>
+            </li>
           </ul>
           <button
             onClick={handleLogout}
