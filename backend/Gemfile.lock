@@ -78,6 +78,8 @@ GEM
       mutex_m
       securerandom (>= 0.3)
       tzinfo (~> 2.0)
+    addressable (2.8.7)
+      public_suffix (>= 2.0.2, < 7.0)
     base64 (0.3.0)
     bcrypt (3.1.20)
     benchmark (0.4.1)
@@ -85,6 +87,8 @@ GEM
     bootsnap (1.18.6)
       msgpack (~> 1.2)
     builder (3.3.0)
+    childprocess (5.1.0)
+      logger (~> 1.5)
     concurrent-ruby (1.3.5)
     connection_pool (2.5.3)
     crass (1.0.6)
@@ -121,6 +125,7 @@ GEM
       railties (>= 6.1.0)
     faker (3.5.1)
       i18n (>= 1.8.11, < 2)
+    filterable (0.1.0)
     globalid (1.2.1)
       activesupport (>= 6.1)
     hashie (5.0.0)
@@ -131,6 +136,15 @@ GEM
       pp (>= 0.6.0)
       rdoc (>= 4.0.0)
       reline (>= 0.4.2)
+    json (2.12.2)
+    jsonapi-serializer (2.2.0)
+      activesupport (>= 4.2)
+    launchy (3.1.1)
+      addressable (~> 2.8)
+      childprocess (~> 5.0)
+      logger (~> 1.6)
+    letter_opener (1.10.0)
+      launchy (>= 2.2, < 4)
     logger (1.7.0)
     loofah (2.24.1)
       crass (~> 1.0.2)
@@ -183,12 +197,16 @@ GEM
     psych (5.2.6)
       date
       stringio
+    public_suffix (6.0.2)
     puma (6.6.0)
       nio4r (~> 2.0)
     pundit (2.5.0)
       activesupport (>= 3.0.0)
     racc (1.8.1)
     rack (3.1.16)
+    rack-cors (3.0.0)
+      logger
+      rack (>= 3.0.14)
     rack-protection (4.1.1)
       base64 (>= 0.1.0)
       logger (>= 1.6.0)
@@ -233,6 +251,10 @@ GEM
     rdoc (6.14.1)
       erb
       psych (>= 4.0.0)
+    redis (5.4.0)
+      redis-client (>= 0.22.0)
+    redis-client (0.25.0)
+      connection_pool
     reline (0.6.1)
       io-console (~> 0.5)
     responders (3.1.1)
@@ -256,8 +278,14 @@ GEM
       rspec-support (~> 3.13)
     rspec-support (3.13.4)
     securerandom (0.4.1)
-    shoulda-matchers (6.5.0)
+    shoulda-matchers (5.3.0)
       activesupport (>= 5.2.0)
+    sidekiq (8.0.4)
+      connection_pool (>= 2.5.0)
+      json (>= 2.9.0)
+      logger (>= 1.6.2)
+      rack (>= 3.1.0)
+      redis-client (>= 0.23.2)
     stringio (3.1.7)
     thor (1.3.2)
     timeout (0.4.3)
@@ -269,6 +297,7 @@ GEM
       base64
       websocket-extensions (>= 0.1.0)
     websocket-extensions (0.1.5)
+    will_paginate (3.3.1)
     zeitwerk (2.7.3)
 
 PLATFORMS
@@ -291,14 +320,21 @@ DEPENDENCIES
   dotenv-rails
   factory_bot_rails
   faker
+  filterable
+  jsonapi-serializer
+  letter_opener
   omniauth
   pg (~> 1.1)
   puma (>= 5.0)
   pundit
+  rack-cors
   rails (~> 7.1.3)
+  redis
   rspec-rails
-  shoulda-matchers
+  shoulda-matchers (~> 5.0)
+  sidekiq
   tzinfo-data
+  will_paginate (~> 3.3)
 
 RUBY VERSION
    ruby 3.3.0p0
