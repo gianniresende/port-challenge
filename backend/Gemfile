@@ -21,7 +21,8 @@ gem 'omniauth'
 # gem "jbuilder"
 
 # Use Redis adapter to run Action Cable in production
-gem 'sidekiq'
+gem 'sidekiq', '~> 7.2'
+
 
 gem 'redis'
 
