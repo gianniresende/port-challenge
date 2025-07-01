@@ -42,7 +42,7 @@ class User < ApplicationRecord
   end
 
   def send_welcome_email
-    p '-------------------------'
+    return if Rails.env.test?
     password = instance_variable_get(:@raw_password)
     Mailers::WelcomeMailerJob.perform_later(self.id, password)
   end
