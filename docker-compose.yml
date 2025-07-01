@@ -20,6 +20,21 @@ services:
       RAILS_ENV: development
       REDIS_URL: redis://redis:6379/1
 
+  test:
+    build: ./backend
+    command: bundle exec rspec
+    environment:
+      RAILS_ENV: test
+      DATABASE_USERNAME: ${DATABASE_USERNAME}
+      DATABASE_PASSWORD: ${DATABASE_PASSWORD}
+      DATABASE_NAME: teamtalk_test
+      DATABASE_HOST: db
+      DATABASE_PORT: 5432
+    volumes:
+      - ./backend:/rails
+    depends_on:
+      - db
+
   sidekiq:
     build: ./backend
     volumes:
@@ -38,8 +53,8 @@ services:
   db:
     image: postgres:15
     restart: always
-    ports:
-      - "5430:5432"
+    # ports:
+    #   - "5433:5432"
     volumes:
       - pg_data:/var/lib/postgresql/data
     env_file:
