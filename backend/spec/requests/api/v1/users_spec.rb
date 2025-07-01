@@ -29,6 +29,7 @@ RSpec.describe "Api::V1::Users", type: :request do
       'Content-Type' => 'application/json'
     }
   end
+
   describe 'POST /api/v1/users' do
     context 'with valid parameters' do
       it 'creates a new user and returns created status' do
@@ -74,6 +75,32 @@ RSpec.describe "Api::V1::Users", type: :request do
 
         expect(json['meta']).to include('current_page', 'total_pages', 'total_entries', 'per_page')
       end
+    end
+  end
+
+  describe 'DELETE /api/v1/users/:id' do
+    let!(:target_user) { create(:user) }
+
+    it 'deletes the user if admin' do
+      delete "/api/v1/users/#{target_user.id}", headers: @auth_headers
+      expect(response).to have_http_status(:ok)
+
+      json = JSON.parse(response.body)
+      expect(json['message']).to eq('User deleted')
+      expect(User.exists?(target_user.id)).to be_falsey
+    end
+  end
+
+  describe 'PATCH /api/v1/users/:id/inactivate' do
+    let!(:target_user) { create(:user) }
+
+    it 'inactivates the user if admin' do
+      patch "/api/v1/users/#{target_user.id}/inactivate", headers: @auth_headers
+      expect(response).to have_http_status(:ok)
+
+      json = JSON.parse(response.body)
+      expect(json['message']).to eq('User inactivated')
+      expect(target_user.reload.status).to eq('inactive')
     end
   end
 end

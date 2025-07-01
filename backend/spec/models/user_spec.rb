@@ -122,5 +122,20 @@ RSpec.describe User, type: :model do
         expect(User.ordered_by(:name, :sideways)).to include(employee, hr)
       end
     end
+
+    describe '#destroy' do
+      it 'removes the user record' do
+        user = create(:user)
+        expect { user.destroy }.to change(User, :count).by(-1)
+      end
+    end
+
+    describe '#inactivate!' do
+      it 'sets the user status to inactive' do
+        user = create(:user, status: :active)
+        user.inactivate!
+        expect(user.reload.status).to eq('inactive')
+      end
+    end
   end
 end

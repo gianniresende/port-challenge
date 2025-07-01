@@ -10,29 +10,29 @@ RSpec.describe UserPolicy do
   let(:target_user) { create(:user) }
 
   permissions :create? do
-    it 'permite admin criar usuário' do
+    it 'allows admin to create user' do
       expect(subject).to permit(admin, User)
     end
 
-    it 'não permite employee criar usuário' do
+    it 'does not allow employee to create user' do
       expect(subject).not_to permit(employee, User)
     end
 
-    it 'não permite hr criar usuário' do
+    it 'does not allow HR to create user' do
       expect(subject).not_to permit(hr, User)
     end
   end
 
-  permissions :destroy? do
-    it 'permite admin deletar usuário' do
+  permissions :destroy?, :inactivate? do
+    it 'allows admin to delete user' do
       expect(subject).to permit(admin, target_user)
     end
 
-    it 'não permite employee deletar usuário' do
+    it 'does not allow employee to delete user' do
       expect(subject).not_to permit(employee, target_user)
     end
 
-    it 'não permite manager deletar usuário' do
+    it 'does not allow manager to delete user' do
       expect(subject).not_to permit(manager, target_user)
     end
   end

@@ -29,6 +29,10 @@ class User < ApplicationRecord
     end
   }
 
+  def inactivate!
+    update!(status: :inactive)
+  end
+
   private
 
   def set_password

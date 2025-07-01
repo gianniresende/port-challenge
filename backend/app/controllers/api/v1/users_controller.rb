@@ -2,6 +2,7 @@ module Api
   module V1
     class UsersController < BaseController
       before_action :authenticate_user!
+      before_action :set_user, only: [:destroy, :inactivate]
 
       def index
         users = UserFilter.call(params)
@@ -26,12 +27,26 @@ module Api
         end
       end
 
+      def destroy
+        authorize @user
+        @user.destroy
+        render json: { message: 'User deleted' }, status: :ok
+      end
+
+      def inactivate
+        authorize @user
+        @user.inactivate!
+        render json: { message: 'User inactivated' }, status: :ok
+      end
+
       private
 
+      def set_user
+        @user = User.find(params[:id])
+      end
       def user_params
         params.require(:user).permit(:email, :name, :role)
       end
-
     end
   end
 end
