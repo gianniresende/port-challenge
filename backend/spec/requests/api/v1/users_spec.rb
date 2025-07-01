@@ -7,7 +7,7 @@ RSpec.describe "Api::V1::Users", type: :request do
       user: {
         email: 'john@example.com',
         name: 'John Doe',
-        role: 'employee'  # use uma role válida
+        role: 'employee'
       }
     }
   end
@@ -15,7 +15,7 @@ RSpec.describe "Api::V1::Users", type: :request do
   let(:invalid_params) do
     {
       user: {
-        email: '',  # email inválido para falha
+        email: '',
         name: 'John Doe',
         role: 'employee'
       }
@@ -23,12 +23,9 @@ RSpec.describe "Api::V1::Users", type: :request do
   end
 
   before do
-    # Faz login para obter os headers necessários
     post '/auth/sign_in', params: { email: admin_user.email, password: 'password123' }
     @auth_headers = {
-      'access-token' => response.headers['access-token'],
-      'client' => response.headers['client'],
-      'uid' => response.headers['uid'],
+      'Authorization' => response.headers['Authorization'],
       'Content-Type' => 'application/json'
     }
   end
@@ -55,6 +52,27 @@ RSpec.describe "Api::V1::Users", type: :request do
 
         json = JSON.parse(response.body)
         expect(json['errors']).to include("Email can't be blank")
+      end
+    end
+
+    context 'with pagination and filtering' do
+      let!(:authenticated_user) { create(:user) }
+      let!(:users) { create_list(:user, 3) }
+      let(:auth_headers) { authenticated_user.create_new_auth_token }
+
+      it 'returns a list of users with pagination meta' do
+        get '/api/v1/users', headers: auth_headers.merge('ACCEPT' => 'application/json')
+
+        expect(response).to have_http_status(:ok)
+
+        json = JSON.parse(response.body)
+
+        expect(json).to have_key('data')
+        expect(json).to have_key('meta')
+
+        expect(json['data'].size).to eq(5)
+
+        expect(json['meta']).to include('current_page', 'total_pages', 'total_entries', 'per_page')
       end
     end
   end
