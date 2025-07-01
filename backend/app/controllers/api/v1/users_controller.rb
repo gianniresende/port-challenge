@@ -5,7 +5,14 @@ module Api
 
       def index
         users = UserFilter.call(params)
-        render json: UserSerializer.new(users)
+        render json: UserSerializer.new(users).serializable_hash.merge(
+          meta: {
+            current_page: users.current_page,
+            total_pages: users.total_pages,
+            total_entries: users.total_entries,
+            per_page: users.per_page
+          }
+        )
       end
       def create
         authorize User

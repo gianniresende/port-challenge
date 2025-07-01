@@ -1,7 +1,7 @@
 module Api
   module V1
     class BaseController < ApplicationController
-      include Pundit
+      include Pundit::Authorization
 
       rescue_from Pundit::NotAuthorizedError, with: :user_not_authorized
 
