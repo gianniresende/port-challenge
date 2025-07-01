@@ -26,7 +26,7 @@ RSpec.describe User, type: :model do
 
   describe 'enums' do
     it { is_expected.to define_enum_for(:role).with_values(%i[employee hr manager admin]) }
-    it { is_expected.to define_enum_for(:status).with_values(%i[active inactive]) }
+    it { is_expected.to define_enum_for(:status).with_values(%i[inactive active]) }
   end
 
   describe '#admin?' do
