@@ -9,12 +9,28 @@ export default function Users() {
   const { authHeaders } = useAuth()
   const [users, setUsers] = useState<User[]>([])
   const [loading, setLoading] = useState(true)
+  const [filters, setFilters] = useState({
+    name: '',
+    role: '',
+    order_by: 'created_at',
+    order: 'desc',
+    page: 1,
+    per_page: 10,
+  })
 
   useEffect(() => {
     const fetchUsers = async () => {
       try {
+        const query = new URLSearchParams()
+        if (filters.name) query.append('name', filters.name)
+        if (filters.role) query.append('role', filters.role)
+        query.append('order_by', filters.order_by)
+        query.append('order', filters.order)
+        query.append('page', String(filters.page))
+        query.append('per_page', String(filters.per_page))
+
         const data = await apiFetch<{ data: { attributes: User }[] }>(
-          `${import.meta.env.VITE_API_URL}/api/v1/users`, {
+          `${import.meta.env.VITE_API_URL}/api/v1/users?${query.toString()}`, {
           headers: {
             Authorization: authHeaders?.authorization || '',
             'Content-Type': 'application/json',
@@ -25,12 +41,6 @@ export default function Users() {
           setUsers(data.data.map((item) => item.attributes))
         }
 
-        // if (!response.ok) {
-        //   throw new Error('Erro ao buscar usuários')
-        // }
-
-        // const data_json: ApiResponse = await response.json()
-        // const users = data_json.data.map((item => item.attributes))
       } catch (error) {
         console.error(error)
       } finally {
@@ -41,7 +51,7 @@ export default function Users() {
     if (authHeaders?.authorization) {
       fetchUsers()
     }
-  }, [authHeaders, apiFetch])
+  }, [authHeaders, filters, apiFetch])
 
   return (
     <div className="max-w-4xl mx-auto px-4 py-8">
@@ -49,7 +59,12 @@ export default function Users() {
       {loading ? (
         <p className="text-center text-gray-500">Carregando...</p>
       ) : (
-        <UserList users={users} />
+        <UserList
+        users={users}
+        loading={loading}
+        filters={filters}
+        setFilters={setFilters}
+      />
       )}
     </div>
   )
