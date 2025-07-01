@@ -5,7 +5,7 @@ module Api
       before_action :set_user, only: [:destroy, :inactivate]
 
       def index
-        users = UserFilter.call(params)
+        users = UserFilter.call(params: params)
         render json: UserSerializer.new(users).serializable_hash.merge(
           meta: {
             current_page: users.current_page,
