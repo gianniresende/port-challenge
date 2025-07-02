@@ -4,10 +4,10 @@
 
 Este projeto é um monorepo que contém dois serviços principais:
 
-- Backend: API Ruby on Rails
-- Frontend: Aplicação frontend em React com Vite
+- Backend: API Ruby on Rails - ruby: "3.3.0" e rails: "7.1.3"
+- Frontend: Aplicação frontend em React com Vite - react: "19.1.0" e vite: "7.0.0"
 
-Utilizamos Docker Compose para facilitar a construção, execução e desenvolvimento local dos serviços.
+Utilizei docker e docker-compose para facilitar a construção, execução e desenvolvimento local dos serviços.
 
 ---
 
@@ -40,7 +40,7 @@ cp .env.example .env
 
 Execute o comando abaixo para construir as imagens do backend e frontend, instalando as dependências necessárias:
 
-Nome sugerido para o nome do projeto
+Nome sugerido para o projeto
 ```bash
 docker-compose --project-name teamtalk
 ```
@@ -59,7 +59,8 @@ docker-compose --project-name teamtalk up -d --build
 
 - O backend estará disponível em `http://localhost:3000`
 - O frontend estará disponível em `http://localhost:5173`
-- MailHog para receber os emails de usuários cadastrados `http://localhost:8025`
+- MailHog para receber os emails de usuários cadastrados basta acessar `http://localhost:8025`
+
 
 ### Comando para entrar no container backend (Rails)
 
@@ -133,7 +134,7 @@ curl -X PATCH http://localhost:3000/api/v1/users/{user_id}/inactivate \
 ## Estrutura do projeto
 
 - `/backend` - código Ruby on Rails
-- `/frontend` - código frontend em Node.js/Vite
+- `/frontend` - código frontend em React/Vite
 - `docker-compose.yml` - configura os serviços Docker
 - `.env` - arquivo de variáveis de ambiente
 
