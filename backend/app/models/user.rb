@@ -4,6 +4,8 @@ class User < ApplicationRecord
 					:recoverable, :rememberable, :validatable, :omniauthable
 	include DeviseTokenAuth::Concerns::User
 
+  has_one :api_token, dependent: :destroy
+
   validates :email, presence: true, uniqueness: { scope: :provider, case_sensitive: false },
                     format: { with: URI::MailTo::EMAIL_REGEXP }
 
