@@ -42,7 +42,7 @@ Execute o comando abaixo para construir as imagens do backend e frontend, instal
 
 Nome sugerido para o nome do projeto
 ```bash
-docker-compose --project-name teamtalk up --build -d
+docker-compose --project-name teamtalk
 ```
 
 ---
@@ -54,7 +54,7 @@ docker-compose --project-name teamtalk up --build -d
 Para subir todos os serviços (backend, banco, redis, frontend, sidekiq):
 
 ```bash
-docker-compose up
+docker-compose --project-name teamtalk up -d --build
 ```
 
 - O backend estará disponível em `http://localhost:3000`
@@ -108,7 +108,7 @@ bundle exec rails c
 User.find_by(email: 'parceiro-rh@sistema.com').api_token.token
 ```
 
-## Criar user via integração
+## Criar user via integração - ambiente dev
 ```bash
 curl -X POST http://localhost:3000/api/v1/users \
   -H "X-Api-Token: Bearer token obtido no passo anterioration" \
@@ -120,7 +120,7 @@ curl -X POST http://localhost:3000/api/v1/users \
   }'
 ```
 
-## Inativar user via integração
+## Inativar user via integração - ambiente dev
 ```bash
 curl -X PATCH http://localhost:3000/api/v1/users/{user_id}/inactivate \
   -H "X-Api-Token: Bearer token obtido no passo anterior" \
