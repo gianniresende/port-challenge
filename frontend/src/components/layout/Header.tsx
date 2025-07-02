@@ -13,7 +13,7 @@ export default function Header() {
   if (!user) return null
 
   return (
-    <header className="bg-blue-600 text-white py-4 shadow">
+    <header className=" bg-gray-700 text-white py-4 shadow">
       <div className="container mx-auto flex justify-between items-center px-4">
         <h1 className="text-xl font-bold">TeamTalk</h1>
         <nav className="flex items-center gap-6">
@@ -21,11 +21,6 @@ export default function Header() {
             <li>
               <Link to="/users" className="hover:underline">
                 Usuários
-              </Link>
-            </li>
-            <li>
-              <Link to="/about" className="hover:underline">
-                Sobre
               </Link>
             </li>
           </ul>

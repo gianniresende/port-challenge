@@ -26,7 +26,7 @@ export function UserList({ users, loading, filters, setFilters }: UserListProps)
         <input
           name="name"
           type="text"
-          placeholder="Filtrar por nome..."
+          placeholder="Filtrar por nome ou email..."
           value={filters.name}
           onChange={handleInputChange}
           className="px-4 py-2 border rounded text-gray-800 w-1/2"
