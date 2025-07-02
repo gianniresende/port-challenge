@@ -357,6 +357,7 @@ DEPENDENCIES
   redis
   rspec-rails
   rswag
+  rswag-specs
   shoulda-matchers (~> 5.0)
   sidekiq (~> 7.2)
   tzinfo-data
