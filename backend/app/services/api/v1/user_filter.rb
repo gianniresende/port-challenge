@@ -1,7 +1,6 @@
 module Api
   module V1
     class UserFilter < ApplicationService
-
       def initialize(params:)
         @params = params
       end
@@ -10,6 +9,7 @@ module Api
         Rails.cache.fetch(cache_key, expires_in: 5.minutes) do
           begin
             users = scoped_users
+
             serialized = UserSerializer.new(users).serializable_hash.merge(
               meta: {
                 current_page: users.current_page,
@@ -19,17 +19,18 @@ module Api
               }
             )
 
-            Result.new(success: true, user: serialized)
+            Result.new(success: true, user: serialized, errors: [])
           rescue StandardError => e
             Rails.logger.error("UserFilter error: #{e.class} - #{e.message}")
             Rails.logger.error(e.backtrace.join("\n"))
 
-            Result.new(success: false, errors: [e.message])
+            Result.new(success: false, user: nil, errors: [e.message])
           end
         end
       end
 
       private
+
       def scoped_users
         User
           .by_name(@params[:name])
@@ -39,6 +40,7 @@ module Api
           .ordered_by(@params[:order_by], @params[:direction])
           .paginate(page: @params[:page], per_page: @params[:per_page])
       end
+
       def cache_key
         [
           'users/index',

@@ -12,8 +12,11 @@ module Api
       def authenticate_any!
         authenticate_user_from_token || authenticate_user!
 
-        render json: { error: 'Unauthorized' }, status: :unauthorized unless current_user
+        return if current_user.present?
+
+        render json: { error: 'Unauthorized' }, status: :unauthorized
       end
+
 
       def authenticate_user_from_token
         token = request.headers['Authorization']&.split(' ')&.last
