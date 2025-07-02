@@ -26,7 +26,7 @@ export default function Header() {
           </ul>
           <button
             onClick={handleLogout}
-            className="bg-white text-blue-600 px-3 py-1 rounded hover:bg-gray-100 transition"
+            className="bg-white text-gray-500 px-3 py-1 rounded hover:bg-gray-200 transition"
           >
             Sair
           </button>
