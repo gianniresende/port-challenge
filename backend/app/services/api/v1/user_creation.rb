@@ -1,10 +1,11 @@
 module Api
   module V1
-    class UserCreation
-      Result = Struct.new(:success, :user, :errors)
-
-      def self.call(params)
-        params_object = UserWebhookParams.new(params)
+    class UserCreation < ApplicationService
+      def initialize(params:)
+        @params = params
+      end
+      def call
+        params_object = UserWebhookParams.new(@params)
 
         unless params_object.valid?
           return Result.new(false, nil, params_object.errors.full_messages)
@@ -14,9 +15,9 @@ module Api
 
         if user.save
           Rails.logger.debug("User creation failed: #{user.errors.full_messages.join(', ')}")
-          Result.new(true, user, nil)
+          Result.new(success: true, user: user)
         else
-          Result.new(false, nil, user.errors.full_messages)
+          Result.new(success: false, errors: user.errors.full_messages)
         end
       end
     end

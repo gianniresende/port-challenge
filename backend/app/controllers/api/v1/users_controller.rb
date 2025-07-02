@@ -5,20 +5,17 @@ module Api
       before_action :set_user, only: [:destroy, :inactivate]
 
       def index
-        users = UserFilter.call(params: params)
-        render json: UserSerializer.new(users).serializable_hash.merge(
-          meta: {
-            current_page: users.current_page,
-            total_pages: users.total_pages,
-            total_entries: users.total_entries,
-            per_page: users.per_page
-          }
-        )
+        result = UserFilter.call(params: params)
+        if result.success
+          render json: result.user
+        else
+          render json: { errors: result.errors }, status: :unprocessable_entity
+        end
       end
       def create
         authorize User
 
-        result = UserCreation.call(user_params)
+        result = UserCreation.call(params: user_params)
 
         if result.success
           render json: { id: result.user.id, message: 'User created' }, status: :created

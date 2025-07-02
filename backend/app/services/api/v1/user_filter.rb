@@ -8,7 +8,24 @@ module Api
 
       def call
         Rails.cache.fetch(cache_key, expires_in: 5.minutes) do
-          scoped_users
+          begin
+            users = scoped_users
+            serialized = UserSerializer.new(users).serializable_hash.merge(
+              meta: {
+                current_page: users.current_page,
+                total_pages: users.total_pages,
+                total_entries: users.total_entries,
+                per_page: users.per_page
+              }
+            )
+
+            Result.new(success: true, user: serialized)
+          rescue StandardError => e
+            Rails.logger.error("UserFilter error: #{e.class} - #{e.message}")
+            Rails.logger.error(e.backtrace.join("\n"))
+
+            Result.new(success: false, errors: [e.message])
+          end
         end
       end
 
