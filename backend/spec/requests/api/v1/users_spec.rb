@@ -1,14 +1,18 @@
 require 'rails_helper'
-
+require 'jwt'
 RSpec.describe "Api::V1::Users", type: :request do
-  let(:admin_user) { create(:user, role: :admin, password: 'password123') }
+  let!(:admin_user) { create(:user, role: :admin, password: 'password123') }
+  let(:token) do
+    JWT.encode(
+      { user_id: admin_user.id, exp: 24.hours.from_now.to_i },
+      Rails.application.credentials.secret_key_base
+    )
+  end
   let(:valid_params) do
     {
-      user: {
-        email: 'john@example.com',
-        name: 'John Doe',
-        role: 'employee'
-      }
+      email: 'john@example.com',
+      name: 'John Doe',
+      role: 'hr'
     }
   end
 
@@ -25,7 +29,7 @@ RSpec.describe "Api::V1::Users", type: :request do
   before do
     post '/auth/sign_in', params: { email: admin_user.email, password: 'password123' }
     @auth_headers = {
-      'Authorization' => response.headers['Authorization'],
+      'authorization' => "Bearer #{token}",
       'Content-Type' => 'application/json'
     }
   end

@@ -1,0 +1,87 @@
+openapi: 3.0.1
+info:
+  title: API V1
+  version: v1
+paths:
+  "/auth/sign_in":
+    post:
+      summary: Login do usuário
+      tags:
+        - Auth
+      parameters: []
+      responses:
+        '200':
+          description: login bem-sucedido
+        '401':
+          description: credenciais inválidas
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                email:
+                  type: string
+                password:
+                  type: string
+              required:
+                - email
+                - password
+
+  "/api/v1/users":
+    get:
+      summary: Lista todos os usuários
+      tags:
+        - Users
+      responses:
+        '200':
+          description: usuários encontrados
+
+  "/api/v1/users/{id}/inactivate":
+    patch:
+      summary: Inativa um usuário
+      tags:
+        - Users
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: integer
+          description: ID do usuário a ser inativado
+      responses:
+        '200':
+          description: Usuário inativado com sucesso
+        '404':
+          description: Usuário não encontrado
+        '401':
+          description: Ação não autorizada
+
+  "/api/v1/users/{id}":
+    delete:
+      summary: Exclui um usuário
+      tags:
+        - Users
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: integer
+          description: ID do usuário a ser excluído
+      security:
+        - bearerAuth: []
+      responses:
+        '204':
+          description: Usuário excluído com sucesso (sem conteúdo)
+        '404':
+          description: Usuário não encontrado
+        '401':
+          description: Ação não autorizada
+
+servers:
+  - url: http://{defaultHost}
+    variables:
+      defaultHost:
+        default: localhost:3000
+
