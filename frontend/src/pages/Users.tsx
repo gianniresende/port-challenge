@@ -11,6 +11,7 @@ export default function Users() {
   const [loading, setLoading] = useState(true)
   const [filters, setFilters] = useState({
     name: '',
+    email: '',
     role: '',
     order_by: 'created_at',
     order: 'desc',

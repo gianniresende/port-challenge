@@ -5,6 +5,7 @@ type UserListProps = {
   loading: boolean
   filters: {
     name: string
+    email: string
     role: string
     order_by: string
     order: string
@@ -17,7 +18,7 @@ type UserListProps = {
 export function UserList({ users, loading, filters, setFilters }: UserListProps) {
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
     const { name, value } = e.target
-    setFilters({ ...filters, [name]: value, page: 1 }) // reset page on filter change
+    setFilters({ ...filters, [name]: value, page: 1 })
   }
 
   return (
@@ -26,7 +27,7 @@ export function UserList({ users, loading, filters, setFilters }: UserListProps)
         <input
           name="name"
           type="text"
-          placeholder="Filtrar por nome ou email..."
+          placeholder="Filtrar por nome"
           value={filters.name}
           onChange={handleInputChange}
           className="px-4 py-2 border rounded text-gray-800 w-1/2"
