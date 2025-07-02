@@ -5,7 +5,15 @@
 Este projeto é um monorepo que contém dois serviços principais:
 
 - Backend: API Ruby on Rails - ruby: "3.3.0" e rails: "7.1.3"
+```Bash
+ruby "3.3.0"
+gem "rails", "~> 7.1.3"
+```
 - Frontend: Aplicação frontend em React com Vite - react: "19.1.0" e vite: "7.0.0"
+```Bash
+"react": "^19.1.0"
+"vite": "^7.0.0"
+```
 
 Utilizei docker e docker-compose para facilitar a construção, execução e desenvolvimento local dos serviços.
 
