@@ -38,7 +38,7 @@ cd port-challenge
 
 ### 2. Configure variáveis de ambiente
 
-Copie o arquivo `.env.example` para `.env` na raiz do projeto e preencha as variáveis necessárias (exemplo: credenciais do banco, mailtrap, etc).
+Copie o arquivo `.env.example` para `.env` na raiz do projeto e dentro da pasta frontend `.env.example` para `.env`.
 
 ```bash
 cp .env.example .env
@@ -90,6 +90,15 @@ Para rodar os testes automatizados do backend:
 
 ```bash
 docker-compose --project-name teamtalk run --rm test bundle exec rspec
+```
+
+---
+
+## User admin criado no seed
+
+```Bash
+email: admin@teamtalk.com
+password: password123
 ```
 
 ---
