@@ -109,7 +109,15 @@ password: password123
 
 - O backend depende dos serviços `db` (Postgres) e `redis`, que são iniciados automaticamente pelo Docker Compose.
 
-- Migrations e seeds serão aplicados automaticamente.
+- Migrations e seeds serão aplicados automaticamente, mas se por algum motivo perceber que o bd não está preparado adequadamente,
+  os seguintes comando podem resolver.
+
+```Bash
+docker-compose --project-name teamtalk exec backend bash
+bundle exec rails db:create
+bundle exec rails db:migrate
+bundle exec rails db:seed
+```
 
 ## Acesso ao container do backend e obter o token para acesso externo autorizado (Sistema de RH) - desenvolvimento
 
