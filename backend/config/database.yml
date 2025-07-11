@@ -1,0 +1,22 @@
+default: &default
+  adapter: postgresql
+  encoding: unicode
+  pool: 5
+  host: <%= ENV["DATABASE_HOST"] || "localhost" %>
+  port: <%= ENV["DATABASE_PORT"] || 5432 %>
+  username: <%= ENV['DATABASE_USERNAME'] || 'postgres' %>
+  password: <%= ENV['DATABASE_PASSWORD'] || '' %>
+
+development:
+  <<: *default
+  database: <%= ENV["DATABASE_NAME"] || "teamtalk_development" %>
+
+test:
+  <<: *default
+  database: teamtalk_test
+
+production:
+  <<: *default
+  database: <%= ENV["PRODUCTION_DATABASE_NAME"] %>
+  username: <%= ENV["PRODUCTION_DATABASE_USERNAME"] %>
+  password: <%= ENV["PRODUCTION_DATABASE_PASSWORD"] %>
