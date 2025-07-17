@@ -165,6 +165,69 @@ curl -X PATCH http://localhost:3000/api/v1/users/{user_id}/inactivate \
 
 ---
 
+## Backend (Rails)
+
+### Principais decisões técnicas
+- Arquitetura limpa com separação da lógica de filtros em Service Object (`UserFilter`).
+- Uso de Form Object (`UserWebhookParams`) para validação dos parâmetros recebidos.
+- Controle de acesso via Policies, garantindo regras baseadas em roles (admin, manager, hr, employee).
+- Serialização padronizada usando `JSONAPI::Serializer` para respostas performáticas e consistentes.
+- Cache com chave dinâmica para otimização de consultas.
+- Utilização de Redis para cache e Sidekiq para jobs assíncronos.
+- Banco de dados PostgreSQL com otimizações.
+- Autenticação via Devise e DeviseTokenAuth.
+
+### Boas práticas aplicadas
+- Adoção dos princípios SOLID (principalmente SRP e OCP).
+- Tratamento de erros com logs detalhados.
+- Envio de e-mails assíncrono.
+
+---
+
+## Frontend (React + Vite)
+
+### Tecnologias utilizadas
+- React 19 e React Router DOM para SPA.
+- TypeScript para segurança de tipos.
+- TailwindCSS para estilização rápida e responsiva.
+- ESLint com plugins para qualidade e padrões de código.
+- Vite para desenvolvimento rápido e build otimizado.
+
+### Estado global
+- Gerenciamento de estado via React Context para evitar prop drilling e manter organização.
+
+### Scripts disponíveis
+- `dev` — ambiente de desenvolvimento com hot reload.
+- `build` — build otimizado para produção.
+- `lint` — verificação de qualidade do código.
+- `preview` — preview local da build.
+
+---
+
+## Infraestrutura e Deployment
+
+- Ambiente local com Docker Compose para backend, frontend, banco, Redis, Sidekiq e MailHog.
+- Deploy em ambiente de produção AWS utilizando EC2.
+- Deploy manual devido a limitação de tempo.
+- Variáveis de ambiente configuradas para segurança.
+
+---
+
+## Melhorias Futuras
+
+- Implementação de pipeline CI/CD para automação de build, testes e deploy (GitHub Actions, GitLab CI, AWS CodePipeline).
+- Ampliação dos testes automatizados no frontend e backend.
+- Avaliação de soluções avançadas para gerenciamento de estado no frontend (Redux, Zustand, React Query).
+- Monitoramento e logging centralizado para produção.
+- Otimizações adicionais de cache e performance para alta carga.
+
+---
+
+## Conclusão
+
+Este projeto evidencia uma solução completa e madura, abrangendo arquitetura backend, frontend moderno, infraestrutura em nuvem, boas práticas de desenvolvimento e foco em qualidade e escalabilidade.
+
+
 ## Contatos e Suporte
 
 Em caso de dúvidas ou problemas, abra uma issue no repositório ou entre em contato com o desenvolvedor.
